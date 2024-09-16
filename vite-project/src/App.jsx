@@ -1,8 +1,8 @@
 import "./App.css";
-import { Header } from "./components/Header";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Post } from "./components/Post";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import supabase from "./lib/helper/supabaseClient";
 
 //use=hooks(agarrar cosas)
@@ -28,7 +28,7 @@ export default function App() {
   }, []);
 
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOnAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
     if (error) {
@@ -40,15 +40,23 @@ export default function App() {
 
   return (
     <>
-      <Header />
-      <button>Inicio Sesion Github</button>
-      <Post
-        titulo={"Titulo Ejemplo"}
-        description={"Descripcion Foto"}
-        link={""}
-        parrafo={"Este es el parrafo de la foto"}
-      />
-      <Footer />
+      <button onClick={handleLogin} style={{ textAlign: "end" }}>
+        Inicio Sesion Github
+      </button>
+      <div className="container">
+        <Header />
+        <div className="post">
+          <Post
+            titulo={"El pogo mas grande del mundo"}
+            description={"Olavarria, 2008"}
+            link={"/LOREDO.webp"}
+            parrafo={
+              "Registros de un concierto de 'Patricio Rey y sus redonditos de ricota' en el que se genero el fenomeno llamado 'El pogo mas grande del mundo'"
+            }
+          />
+        </div>
+        <Footer />
+      </div>
     </>
   );
 }

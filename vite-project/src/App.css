@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+/* Estilo para el botón de inicio de sesión */
+button {
+  background-color: #0070f3;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: end;
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+/* Estilo para el header y el footer */
+header,
+footer {
+  width: 100%;
+  padding: 10px 0;
+  background-color: #f1f1f1;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+footer {
+  border-top: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+/* Estilo para el componente Post */
+.post {
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.post h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.post p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Estilo específico para el título y la descripción del Post */
+.post-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.post-description {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #666;
+}
