@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import supabase from "./lib/helper/supabaseClient";
 
 //use=hooks(agarrar cosas)
-export default function App() {
+/*export default function App() {
   const [user, setUser] = useState(null); //useState define el valor con el que va a iniciar
   //setUser Funcion que actualiza una variable
   useEffect(() => {
@@ -25,38 +25,79 @@ export default function App() {
       }
     };
     getSession();
+  }, []);*/
+
+export default function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const session = supabase.auth.getSession();
+    setUser(session?.user);
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      switch (event) {
+        case "SIGNED_IN":
+          setUser(session?.user);
+          break;
+        case "SIGNED_OUT":
+          setUser(null);
+          break;
+        default:
+          console.log("caso no estimado");
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: "github",
     });
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(data);
-    }
   };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  /*  if (error) {
+    console.log(error);
+  } else {
+    console.log(data);
+  }*/
 
   return (
     <>
-      <button onClick={handleLogin} style={{ textAlign: "end" }}>
-        Inicio Sesion Github
-      </button>
-      <div className="container">
-        <Header />
-        <div className="post">
-          <Post
-            titulo={"El pogo mas grande del mundo"}
-            description={"Olavarria, 2008"}
-            link={"/LOREDO.webp"}
-            parrafo={
-              "Registros de un concierto de 'Patricio Rey y sus redonditos de ricota' en el que se genero el fenomeno llamado 'El pogo mas grande del mundo'"
-            }
-          />
+      {user ? (
+        <div>
+          <h2>Authenticated</h2>
+          <button onClick={handleLogout}>logout</button>
         </div>
-        <Footer />
-      </div>
+      ) : (
+        <button onClick={handleLogin}>login Github</button>
+      )}
     </>
   );
 }
+/*
+<button onClick={handleLogin} style={{ textAlign: "end" }}>
+      Inicio Sesion Github
+    </button>
+    <div className="container">
+      <Header />
+      <div className="post">
+        <Post
+          titulo={"El pogo mas grande del mundo"}
+          description={"Olavarria, 2008"}
+          link={"/LOREDO.webp"}
+          parrafo={
+            "Registros de un concierto de 'Patricio Rey y sus redonditos de ricota' en el que se genero el fenomeno llamado 'El pogo mas grande del mundo'"
+          }
+        />
+      </div>
+      <Footer />
+    </div>*/
